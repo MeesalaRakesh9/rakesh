@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Search Hall Ticket</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+    .result {
+      margin-top: 20px;
+      padding: 10px;
+      border: 1px solid #ddd;
+      background-color: #f9f9f9;
+    }
+    .error {
+      color: red;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Search for Hall Ticket Information</h1>
+  
+  <!-- Search Form -->
+  <label for="hallTicketNumber">Enter Hall Ticket Number: </label>
+  <input type="text" id="hallTicketNumber" placeholder="Enter number">
+  <button onclick="searchHallTicket()">Search</button>
+
+  <!-- Display Result -->
+  <div id="result" class="result"></div>
+
+  <script>
+    // Function to search hall ticket number in XML data
+    function searchHallTicket() {
+      // Get the hall ticket number input
+      const hallTicketNumber = document.getElementById('hallTicketNumber').value;
+      if (!hallTicketNumber) {
+        document.getElementById('result').innerHTML = "<p class='error'>Please enter a hall ticket number.</p>";
+        return;
+      }
+
+      // Load XML data (you can replace this with your XML file or AJAX call)
+      const xmlData = `
+        <students>
+          <student>
+            <hallTicketNumber>123456</hallTicketNumber>
+            <name>John Doe</name>
+            <course>Computer Science</course>
+          </student>
+          <student>
+            <hallTicketNumber>789101</hallTicketNumber>
+            <name>Jane Smith</name>
+            <course>Mechanical Engineering</course>
+          </student>
+          <!-- More student data -->
+        </students>
+      `;
+      
+      // Parse XML data
+      const parser = new DOMParser();
+      const xmlDoc = parser.parseFromString(xmlData, "text/xml");
+
+      // Search for the student by hall ticket number
+      const students = xmlDoc.getElementsByTagName("student");
+      let resultFound = false;
+
+      for (let i = 0; i < students.length; i++) {
+        const hallTicket = students[i].getElementsByTagName("hallTicketNumber")[0].textContent;
+
+        if (hallTicket === hallTicketNumber) {
+          const name = students[i].getElementsByTagName("name")[0].textContent;
+          const course = students[i].getElementsByTagName("course")[0].textContent;
+          document.getElementById('result').innerHTML = `
+            <p><strong>Hall Ticket Number:</strong> ${hallTicket}</p>
+            <p><strong>Name:</strong> ${name}</p>
+            <p><strong>Course:</strong> ${course}</p>
+          `;
+          resultFound = true;
+          break;
+        }
+      }
+
+      if (!resultFound) {
+        document.getElementById('result').innerHTML = "<p class='error'>No student found with this hall ticket number.</p>";
+      }
+    }
+  </script>
+
+</body>
+</html>

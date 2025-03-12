@@ -1,0 +1,12 @@
+<students>
+  <student>
+    <hallTicketNumber>123456</hallTicketNumber>
+    <name>John Doe</name>
+    <course>Computer Science</course>
+  </student>
+  <student>
+    <hallTicketNumber>789101</hallTicketNumber>
+    <name>Jane Smith</name>
+    <course>Mechanical Engineering</course>
+  </student>
+</students>
